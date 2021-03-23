@@ -5,16 +5,17 @@ using System.Web;
 using System.Web.Mvc;
 using MarketPlace.Core.Models;
 using MarketPlace.DataAccess.InMemory;
+using MarketPlace.Core.Contracts;
 
 namespace MarketPlace.WebUI.Controllers
 {
     public class ProductCategoryManagerController : Controller
     {
-        InMemoryRepository<ProductCategory> context;
+        IRepository<ProductCategory> context;
 
-        public ProductCategoryManagerController()
+        public ProductCategoryManagerController(IRepository<ProductCategory> productCategoryContext)
         {
-            context = new InMemoryRepository<ProductCategory>();
+            this.context = productCategoryContext;
         }
 
         // GET: ProductManager

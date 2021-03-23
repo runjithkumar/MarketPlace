@@ -1,4 +1,5 @@
-﻿using MarketPlace.Core.Models;
+﻿using MarketPlace.Core.Contracts;
+using MarketPlace.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MarketPlace.DataAccess.InMemory
 {
-    public class InMemoryRepository<T> where T : BaseEntity
+    public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
     {
         ObjectCache cache = MemoryCache.Default;
         List<T> items;
@@ -19,7 +20,7 @@ namespace MarketPlace.DataAccess.InMemory
             className = typeof(T).Name;
             items = cache[className] as List<T>;
 
-            if(items == null)
+            if (items == null)
             {
                 items = new List<T>();
             }
@@ -42,7 +43,8 @@ namespace MarketPlace.DataAccess.InMemory
             if (tToUpdate != null)
             {
                 tToUpdate = t;
-            } else
+            }
+            else
             {
                 throw new Exception(className + " Not Found.");
             }
@@ -52,10 +54,11 @@ namespace MarketPlace.DataAccess.InMemory
         {
             T t = items.Find(i => i.Id == Id);
 
-            if(t != null)
+            if (t != null)
             {
                 return t;
-            } else
+            }
+            else
             {
                 throw new Exception(className + " Not Found.");
             }
@@ -67,18 +70,18 @@ namespace MarketPlace.DataAccess.InMemory
         }
 
         public void Delete(string Id)
-         {
-                T tToDelete = items.Find(i => i.Id == Id);
+        {
+            T tToDelete = items.Find(i => i.Id == Id);
 
-                if (tToDelete != null)
-                {
+            if (tToDelete != null)
+            {
                 items.Remove(tToDelete);
-                }
-                else
-                {
-                    throw new Exception(className + " Not Found.");
-                }
             }
+            else
+            {
+                throw new Exception(className + " Not Found.");
+            }
+        }
 
     }
 }

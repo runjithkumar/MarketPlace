@@ -6,19 +6,20 @@ using System.Web.Mvc;
 using MarketPlace.Core.Models;
 using MarketPlace.Core.ViewModels;
 using MarketPlace.DataAccess.InMemory;
+using MarketPlace.Core.Contracts;
 
 namespace MarketPlace.WebUI.Controllers
 {
     public class ProductManagerController : Controller
     {
 
-        InMemoryRepository<Product> context;
-        InMemoryRepository<ProductCategory> productCategories;
+        IRepository<Product> context;
+        IRepository<ProductCategory> productCategories;
 
-        public ProductManagerController()
+        public ProductManagerController(IRepository<Product> productContext, IRepository<ProductCategory> productCategoriesContext)
         {
-            context = new InMemoryRepository<Product>();
-            productCategories = new InMemoryRepository<ProductCategory>();
+            this.context = productContext;
+            this.productCategories = productCategoriesContext;
         }
 
         // GET: ProductManager
