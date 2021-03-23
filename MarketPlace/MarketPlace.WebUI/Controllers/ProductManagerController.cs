@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MarketPlace.Core.Models;
+using MarketPlace.Core.ViewModels;
 using MarketPlace.DataAccess.InMemory;
 
 namespace MarketPlace.WebUI.Controllers
@@ -11,10 +12,12 @@ namespace MarketPlace.WebUI.Controllers
     public class ProductManagerController : Controller
     {
         ProductRepository context;
+        ProductCategoryRepository productCategories;
 
         public ProductManagerController()
         {
             context = new ProductRepository();
+            productCategories = new ProductCategoryRepository();
         }
 
         // GET: ProductManager
@@ -27,8 +30,11 @@ namespace MarketPlace.WebUI.Controllers
 
         public ActionResult Create()
         {
-            Product product = new Product();
-            return View(product);
+            ProductManagerViewModel viewModel = new ProductManagerViewModel();
+
+            viewModel.Product = new Product();
+            viewModel.ProductCategories = productCategories.Collection();
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -54,7 +60,11 @@ namespace MarketPlace.WebUI.Controllers
                 return HttpNotFound();
             } else
             {
-                return View(product);
+                ProductManagerViewModel viewModel = new ProductManagerViewModel();
+                viewModel.Product = product;
+                viewModel.ProductCategories = productCategories.Collection();
+
+                return View(viewModel);
             }
         }
 
@@ -80,6 +90,7 @@ namespace MarketPlace.WebUI.Controllers
                 productToEdit.Price = product.Price;
 
                 context.Commit();
+
                 return RedirectToAction("Index");
             }
 
