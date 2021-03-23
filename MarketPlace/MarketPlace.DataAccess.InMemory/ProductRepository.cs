@@ -9,13 +9,13 @@ using MarketPlace.Core.Models;
 
 namespace MarketPlace.DataAccess.InMemory
 {
-    class ProductRepository
+    public class ProductRepository
     {
         ObjectCache cache = MemoryCache.Default;
         List<Product> products = new List<Product>();
 
         public ProductRepository() {
-            products = cache["Products"] as List<Product>;
+            products = cache["products"] as List<Product>;
             if(products == null)
             {
                 products = new List<Product>();
