@@ -15,6 +15,7 @@ namespace MarketPlace.DataAccess.InMemory
         List<Product> products = new List<Product>();
 
         public ProductRepository() {
+            products = cache["products"] as List<Product>;
             if(products == null)
             {
                 products = new List<Product>();
